@@ -1,4 +1,4 @@
-#include "product.h"
+#include "../include/product.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>

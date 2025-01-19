@@ -1,4 +1,4 @@
-#include "bTree.h"
+#include "../include/bTree.h"
 
 BTree::Node::Node(bool isLeaf, Product product) : isLeaf(isLeaf), product(product) {}
 

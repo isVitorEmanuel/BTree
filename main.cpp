@@ -1,11 +1,11 @@
 #include <iostream>
 #include <vector>
-#include "product.h"
+#include "./include/product.h"
 
 using namespace std;
 
 int main() {
-    vector<Product> products = Product::importProducts("dadosB.txt");
+    vector<Product> products = Product::importProducts("./assets/dadosB.txt");
     cout << "Produtos importados: " << products.size() << endl;
 
     for (const auto& product : products) {
