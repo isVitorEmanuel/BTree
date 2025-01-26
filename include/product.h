@@ -1,25 +1,29 @@
-#ifndef PRODUCT_H
-#define PRODUCT_H
+    #ifndef PRODUCT_H
+    #define PRODUCT_H
 
-#include <string>
-#include <vector>
+    #include <string>
+    #include <vector>
 
-using namespace std;
+    using namespace std;
 
-class Product {
-private:
-    int id;
-    string name;
-    int quantity;
+    class Product {
+    private:
+        int id;
+        string name;
+        int quantity;
 
-public:
-    Product(int id, const string& name, int quantity);
+    public:
+        Product();
+        Product(int id, const string& name, int quantity);
 
-    int getId() const;
-    const string& getName() const;
-    int getQuantity() const;
+        int getId() const;
+        const string& getName() const;
+        int getQuantity() const;
 
-    static vector<Product> importProducts(const string& filename);
-};
+        static vector<Product> importProducts(const string& filename);
 
-#endif
+        string toStringComplete() const;
+        string toStringId() const;
+    };
+
+    #endif

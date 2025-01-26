@@ -1,161 +1,206 @@
-#include <vector>
-#include <memory>
-#include <variant>
+#include <queue>
+#include <iostream>
+#include "../include/product.h"
 
-template <typename T>
-class BTreeNode {
+using namespace std;
+
+class TreeNode {
+    vector<Product> keys;
+    int t;
+    TreeNode **C;
+    int n;
+    bool leaf;
+
 public:
-    // pode ser um valor ou pode ser um ponteiro prum filho. 
-    // quem vai cuidar de alternar certinho pra ficar conforme o professor 
-    // indicou vai ser qm implementar as funcoes. (deixei conforme ele sugeriu)
-    using Element = std::variant<T, std::shared_ptr<BTreeNode>>;
+    TreeNode(int temp, bool leaf1);
 
-    std::vector<Element> elements;
-    bool isLeaf;                   
+    const Product& getKey(int index) const {
+        return keys[index];
+    }
 
-    BTreeNode(bool isLeaf) : isLeaf(isLeaf) {}
+    void insertNonFull(const Product& p);
+    void splitChild(int i, TreeNode *y);
+    void traverse();
+
+    TreeNode *search(int id);
+
+    friend class BTree;
 };
 
-template <typename T>
 class BTree {
-public:
-    std::shared_ptr<BTreeNode<T>> root; 
+    TreeNode *root;
+    int t;
 
-    BTree() : root(nullptr) {}
+public:
+    BTree(int temp) {
+        root = NULL;
+        t = temp;
+    }
+
+    void traverse() {
+        if (root != NULL)
+            root->traverse();
+    }
+
+    TreeNode *search(int k) {
+        return (root == NULL) ? NULL : root->search(k);
+    }
+
+    void insert(const Product& p);
 };
 
-// um exemplo gerado pelo gpt (com erros) pra exemplificar uso:
-// Definição da estrutura da árvore B
-/*template <typename T>*/
-/*class BTree {*/
-/*public:*/
-/*    std::shared_ptr<BTreeNode<T>> root; // Ponteiro para a raiz da árvore*/
-/*    int order;                          // Ordem da árvore (d)*/
-/**/
-/*    BTree(int order) : root(nullptr), order(order) {}*/
-/**/
-/*    // Insere uma chave na árvore*/
-/*    void insert(const T& key) {*/
-/*        if (!root) {*/
-/*            root = std::make_shared<BTreeNode<T>>(true); // Cria um nó raiz se não existir*/
-/*            root->elements.push_back(key);*/
-/*        } else {*/
-/*            if (root->elements.size() == 2 * order) {*/
-/*                auto newRoot = std::make_shared<BTreeNode<T>>(false); // Cria um novo nó raiz*/
-/*                newRoot->elements.push_back(root); // O antigo root se torna o primeiro filho*/
-/*                splitNode(newRoot, 0); // Divide o antigo root*/
-/*                root = newRoot; // Atualiza a raiz*/
-/*            }*/
-/*            insertNonFull(root, key);*/
-/*        }*/
-/*    }*/
-/**/
-/*private:*/
-/*    // Insere em um nó não cheio*/
-/*    void insertNonFull(std::shared_ptr<BTreeNode<T>> node, const T& key) {*/
-/*        if (node->isLeaf) {*/
-/*            // Insere a chave no nó folha*/
-/*            auto it = std::find_if(node->elements.begin(), node->elements.end(),*/
-/*                [&](const auto& elem) {*/
-/*                    return std::holds_alternative<T>(elem) && std::get<T>(elem) > key;*/
-/*                });*/
-/*            node->elements.insert(it, key);*/
-/*        } else {*/
-/*            // Encontra o filho apropriado*/
-/*            int i = 0;*/
-/*            while (i < node->elements.size() && (!std::holds_alternative<T>(node->elements[i]) || std::get<T>(node->elements[i]) < key)) {*/
-/*                i++;*/
-/*            }*/
-/*            i = i / 2; // Converte índice de elemento para índice de filho*/
-/**/
-/*            auto childNode = std::get<std::shared_ptr<BTreeNode<T>>>(node->elements[2 * i + 1]);*/
-/*            if (childNode->elements.size() == 2 * order) {*/
-/*                splitNode(node, i);*/
-/*                if (std::get<T>(node->elements[2 * i]) < key) {*/
-/*                    i++;*/
-/*                }*/
-/*            }*/
-/*            insertNonFull(std::get<std::shared_ptr<BTreeNode<T>>>(node->elements[2 * i + 1]), key);*/
-/*        }*/
-/*    }*/
-/**/
-/*    // Divide um nó cheio*/
-/*    void splitNode(std::shared_ptr<BTreeNode<T>> parent, int i) {*/
-/*        auto fullNode = std::get<std::shared_ptr<BTreeNode<T>>>(parent->elements[2 * i + 1]);*/
-/*        int mid = fullNode->elements.size() / 2;*/
-/**/
-/*        auto newNode = std::make_shared<BTreeNode<T>>(fullNode->isLeaf);*/
-/*        newNode->elements.assign(fullNode->elements.begin() + mid + 1, fullNode->elements.end());*/
-/*        fullNode->elements.resize(mid);*/
-/**/
-/*        parent->elements.insert(parent->elements.begin() + 2 * i, std::get<T>(fullNode->elements[mid]));*/
-/*        parent->elements.insert(parent->elements.begin() + 2 * i + 1, newNode);*/
-/*    }*/
-/*};*/
-/**/
-/*// Função para imprimir a árvore B*/
-/*template <typename T>*/
-/*void printTree(const std::shared_ptr<BTreeNode<T>>& node, int depth = 0) {*/
-/*    if (!node) return;*/
-/**/
-/*    std::string prefix(depth * 4, ' '); // Indenta para exibir a profundidade*/
-/*    std::cout << prefix << (node->isLeaf ? "Leaf: " : "Internal: ");*/
-/**/
-/*    for (const auto& elem : node->elements) {*/
-/*        if (std::holds_alternative<T>(elem)) {*/
-/*            std::cout << std::get<T>(elem) << " ";*/
-/*        } else {*/
-/*            std::cout << "[Child] ";*/
-/*        }*/
-/*    }*/
-/*    std::cout << "\n";*/
-/**/
-/*    for (const auto& elem : node->elements) {*/
-/*        if (std::holds_alternative<std::shared_ptr<BTreeNode<T>>>(elem)) {*/
-/*            printTree(std::get<std::shared_ptr<BTreeNode<T>>>(elem), depth + 1);*/
-/*        }*/
-/*    }*/
-/*}*/
-/**/
-/*// Testa a implementação da árvore B*/
-/*int main() {*/
-/*    BTree<int> tree(2); // Árvore B de ordem 2*/
-/**/
-/*    std::vector<int> keys = {10, 20, 5, 6, 12, 30, 7, 17};*/
-/*    for (const auto& key : keys) {*/
-/*        tree.insert(key);*/
-/*    }*/
-/**/
-/*    std::cout << "Árvore B:\n";*/
-/*    printTree(tree.root);*/
-/**/
-/*    return 0;*/
-/*}*/
+TreeNode::TreeNode(int t1, bool leaf1) {
+    t = t1;
+    leaf = leaf1;
 
+    keys.resize(2 * t - 1);
+    C = new TreeNode *[2 * t];
 
+    n = 0;
+}
 
+void TreeNode::traverse() {
+    // Usando uma fila para percorrer a árvore por nível
+    queue<TreeNode*> q;
+    q.push(this);
 
-// AQUI TEM OQ TAVA NO ARQUIVO ANTES DE EU BULIR NELE!!
+    int level = 1; // Variável para acompanhar o nível da árvore
 
-/**/
-/*BTree::Node::Node(bool isLeaf, Product product) : isLeaf(isLeaf), product(product) {}*/
-/**/
-/*// Função para inserir um produto na árvore B*/
-/*void BTree::insert(Product& product) {*/
-/**/
-/*}*/
-/**/
-/*// Função para procurar um produto pela chave (ID)*/
-/*BTree::Node* BTree::search(int id) {*/
-/**/
-/*}*/
-/**/
-/*// Função para remover um produto da árvore B*/
-/*void BTree::remove(int id) {*/
-/**/
-/*}*/
-/**/
-/*// Função para visualizar a árvore B*/
-/*void BTree::view() {*/
-/**/
-/*}*/
+    while (!q.empty()) {
+        int size = q.size();  // Número de elementos no nível atual
+        cout << "Nível " << level << ": ";
+
+        // Processando todos os nós no nível atual
+        for (int i = 0; i < size; i++) {
+            TreeNode* current = q.front();
+            q.pop();
+
+            // Imprime as chaves do nó
+            for (int j = 0; j < current->n; j++) {
+                cout << "[" << current->getKey(j).toStringComplete() << "] ";
+            }
+
+            // Se o nó não for folha, adiciona seus filhos à fila
+            if (!current->leaf) {
+                for (int j = 0; j <= current->n; j++) {
+                    q.push(current->C[j]);
+                }
+            }
+        }
+
+        cout << endl;
+        level++; // Incrementa o nível a cada iteração
+    }
+}
+
+// Adicionando a lógica de inserção (não alterada)
+void BTree::insert(const Product& p) {
+    if (root == NULL) {
+        root = new TreeNode(t, true);
+        root->keys[0] = p;
+        root->n = 1;
+    } else {
+        if (root->n == 2 * t - 1) {
+            TreeNode *s = new TreeNode(t, false);
+            s->C[0] = root;
+            s->splitChild(0, root);
+
+            int i = 0;
+            if (s->keys[0].getId() < p.getId())
+                i++;
+            s->C[i]->insertNonFull(p);
+
+            root = s;
+        } else {
+            root->insertNonFull(p);
+        }
+    }
+}
+
+void TreeNode::insertNonFull(const Product& p) {
+    int i = n - 1;
+
+    if (leaf) {
+        while (i >= 0 && keys[i].getId() > p.getId()) {
+            keys[i + 1] = keys[i];
+            i--;
+        }
+        keys[i + 1] = p;
+        n++;
+    } else {
+        while (i >= 0 && keys[i].getId() > p.getId())
+            i--;
+
+        if (C[i + 1]->n == 2 * t - 1) {
+            splitChild(i + 1, C[i + 1]);
+
+            if (keys[i + 1].getId() < p.getId())
+                i++;
+        }
+        C[i + 1]->insertNonFull(p);
+    }
+}
+
+void TreeNode::splitChild(int i, TreeNode *y) {
+    TreeNode *z = new TreeNode(y->t, y->leaf);
+    z->n = t - 1;
+
+    for (int j = 0; j < t - 1; j++) {
+        z->keys[j] = y->keys[j + t];
+    }
+
+    if (!y->leaf) {
+        for (int j = 0; j < t; j++) {
+            z->C[j] = y->C[j + t];
+        }
+    }
+
+    y->n = t - 1;
+    for (int j = n; j >= i + 1; j--) {
+        C[j + 1] = C[j];
+    }
+
+    C[i + 1] = z;
+
+    for (int j = n - 1; j >= i; j--) {
+        keys[j + 1] = keys[j];
+    }
+
+    keys[i] = y->keys[t - 1];
+    n++;
+}
+
+int main() {
+    BTree t(2);
+    t.insert(Product(50, "Product A", 10));
+    t.insert(Product(116, "Product B", 20));
+    t.insert(Product(150, "Product C", 30));
+    t.insert(Product(203, "Product D", 40));
+    t.insert(Product(60, "Product E", 5));
+    t.insert(Product(180, "Product F", 15));
+    t.insert(Product(115, "Product F", 15));
+    t.insert(Product(117, "Product F", 15));
+    t.insert(Product(111, "Product F", 15));
+    t.insert(Product(12, "Product F", 15));
+    t.insert(Product(2, "Product F", 15));
+    t.insert(Product(32, "Product F", 15));
+    t.insert(Product(41, "Product F", 15));
+    t.insert(Product(18, "Product F", 15));
+    t.insert(Product(11, "Product F", 15));
+    t.insert(Product(1, "Product F", 15));
+    t.insert(Product(3, "Product F", 15));
+    t.insert(Product(5, "Product F", 15));
+    t.insert(Product(110, "Product F", 15));
+    t.insert(Product(6, "Product F", 15));
+    t.insert(Product(7, "Product F", 15));
+    t.insert(Product(8, "Product F", 15));
+    t.insert(Product(9, "Product F", 15));
+    t.insert(Product(12, "Product F", 15));
+    t.insert(Product(19, "Product F", 15));
+    t.insert(Product(21, "Product F", 15));
+
+    cout << "A árvore B é: " << endl;
+    t.traverse();  // Imprimindo por nível
+
+    return 0;
+}
