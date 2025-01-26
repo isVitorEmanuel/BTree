@@ -170,6 +170,28 @@ void TreeNode::splitChild(int i, TreeNode *y) {
     n++;
 }
 
+TreeNode* TreeNode::search(int id){
+    int i=0;
+
+    //Procura o primeiro valor maior ou igual a id
+    while (i < n && keys[i].getId() < id) {
+        i++;
+    }
+    // Se o valor é igual ao id, retorna o nó 
+    if (i < n && keys[i].getId() == id) {
+        return this;
+    }
+    // Se o valor não foi achado e é uma folha
+    if(leaf){
+        return NULL;
+    }
+    //Vai para o nó apropriado
+    return C[i]->search(id);
+    
+
+}
+
+
 int main() {
     BTree t(2);
     t.insert(Product(50, "Product A", 10));
