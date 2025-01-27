@@ -3,8 +3,7 @@
 Este projeto implementa uma Árvore B para armazenar e organizar informações de um sistema de controle de estoque. A árvore B permite a inserção, exclusão e busca de itens no estoque com base em um ID único.
 
 ## 1. Fluxograma da Função de Exclusão em uma Árvore B
-
-![Fluxograma da Função de Exclusão em uma Árvore B]()
+![Image](https://github.com/user-attachments/assets/ae63c1c1-d189-4290-9ef8-a82c2bd26c1b)
 
 ---
 
