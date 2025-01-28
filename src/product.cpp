@@ -6,6 +6,8 @@
 
 using namespace std;
 
+Product::Product() : id(0), name(""), quantity(0) {}
+
 Product::Product(int id, const string& name, int quantity)
     : id(id), name(name), quantity(quantity) {}
 
@@ -21,12 +23,24 @@ int Product::getQuantity() const {
     return quantity;
 }
 
+string Product::toStringComplete() const {
+  ostringstream oss;
+  oss << "{ " << id << ", " << name << ", " << quantity << " }";
+  return oss.str();
+}
+
+string Product::toStringId() const {
+  ostringstream oss;
+  oss << "[ " << id << ", " << quantity << " ]";
+  return oss.str();
+}
+
 vector<Product> Product::importProducts(const string& filename) {
     vector<Product> products; 
     ifstream file(filename);
 
     if (!file.is_open()) {
-        cerr << "Erro ao abrir o arquivo!" << endl;
+        cerr << "ERROR: loading products file!" << endl;
         return products;
     }
 

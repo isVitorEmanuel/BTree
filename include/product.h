@@ -13,13 +13,17 @@ private:
     int quantity;
 
 public:
+    Product();
     Product(int id, const string& name, int quantity);
 
-    int getId() const;
-    const string& getName() const;
-    int getQuantity() const;
+    [[nodiscard]] int getId() const;
+    [[nodiscard]] const string& getName() const;
+    [[nodiscard]] int getQuantity() const;
 
     static vector<Product> importProducts(const string& filename);
+
+    [[nodiscard]] string toStringComplete() const;
+    [[nodiscard]] string toStringId() const;
 };
 
 #endif
