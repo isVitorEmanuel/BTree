@@ -7,7 +7,7 @@ Este projeto implementa uma Árvore B para armazenar e organizar informações d
 
 ---
 
-### 2. Implementação Computacional 
+## 2. Implementação Computacional 
 
 A árvore B foi implementada para armazenar os itens de estoque, com as seguintes informações em cada nó:
 - **ID do item**: chave única (inteiro).
@@ -18,9 +18,9 @@ A árvore B possui as operações básicas:
 - **Inserção**: Adiciona um novo item no sistema de controle de estoque.
 - **Busca**: Permite buscar um item pelo ID (por exemplo, `buscar pelo ID 109` deve retornar `{109, "SSD", 30}`).
 - **Exclusão**: Remove um item da árvore com base no ID (por exemplo, `excluir o ID 140`).
-- **Geração de arquivo `.dot` para visualização com Graphviz**: A árvore pode ser visualizada utilizando o Graphviz, gerando um arquivo `.dot` que pode ser renderizado para exibição gráfica da estrutura da árvore.
+- **Visualização da Árvore**
 
-### 3. Arquivo de Dados
+## 3. Arquivo de Dados
 
 Os dados dos itens de estoque a serem inseridos na árvore B estão disponíveis no arquivo [`./assets/dadosB.txt`](./assets/dadosB.txt). Este arquivo contém uma lista de itens no seguinte formato:
 
@@ -28,7 +28,7 @@ Os dados dos itens de estoque a serem inseridos na árvore B estão disponíveis
 {ID, "Nome", Quantidade}
 ```
 
-### 4. Organização do Projeto
+## 4. Organização do Projeto
 
 ```plaintext
 ├── assets
@@ -45,7 +45,7 @@ Os dados dos itens de estoque a serem inseridos na árvore B estão disponíveis
     └── product.cpp
 ```
 
-#### Explicando a organização
+### Explicando a organização
 
 - `/assets` - Contém arquivos auxiliares ou de dados usados no projeto.
   - `dadosB.txt`: Um arquivo de dados utilizado pela aplicação para alimentar a estrutura de árvore B.
@@ -63,7 +63,7 @@ Os dados dos itens de estoque a serem inseridos na árvore B estão disponíveis
   - `README.md`: Documento que descreve o propósito, as funcionalidades e as instruções de uso do projeto.
   - `.gitignore`: Arquivo que especifica quais arquivos ou diretórios devem ser ignorados pelo sistema de controle de versão Git
 
-### 5. Compilação e Execução
+## 5. Compilação e Execução
 
 Para compilar e executar o programa, siga os passos abaixo:
 
@@ -76,13 +76,25 @@ Para compilar e executar o programa, siga os passos abaixo:
    ```bash
     ./program
    ```
+## 6. Vídeo
 
-## 6. Componentes do Grupo
+[Link do vídeo]()
+
+## 7. Componentes e Listagem das tarefas realizadas por cada integrante
 
 - [Felipe Augusto Lemos Barreto](https://github.com/felipe130520)
+  - Produziu o fluxograma para a função de exclusão de uma informação em uma árvore B
+  - Implementou a busca
 - [Francisca Gabrielly Lopes Freire](https://github.com/gabrielly-freire)
+  - Implementou  a leitura dos dados do arquivo txt
+  - Ficou responsável pela organização do repositório
 - [Gustavo Henrique Araujo de Sales Leite](https://github.com/Gustavohasleite)
+  - Implementou a exclusão
 - [João Lucas de Moraes Pereira](https://github.com/JJoaoll)
+  - Criou a estrutura da árvore
+  - Gravou o vídeo
 - [Vitor Emanuel Rodrigues de Alencar](https://github.com/isVitorEmanuel)
+  - Implementou a inserção
+  - Implementou a visualização da árvore
 
 
