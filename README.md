@@ -78,7 +78,7 @@ Para compilar e executar o programa, siga os passos abaixo:
    ```
 ## 6. Vídeo
 
-[Link do vídeo]()
+[Link do vídeo](https://youtu.be/Tw0KN0DeH9U?si=DcMci6uUJbB2jlnD)
 
 ## 7. Componentes e Listagem das tarefas realizadas por cada integrante
 
